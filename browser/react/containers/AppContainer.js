@@ -25,6 +25,7 @@ export default class AppContainer extends Component {
     this.selectArtist = this.selectArtist.bind(this);
     this.updatePlaylists = this.updatePlaylists.bind(this);
     this.selectPlaylist = this.selectPlaylist.bind(this);
+    this.updateSelectedPlaylistSongs = this.updateSelectedPlaylistSongs.bind(this);
   }
 
   componentDidMount () {
@@ -33,7 +34,8 @@ export default class AppContainer extends Component {
       .all([
         axios.get('/api/albums/'),
         axios.get('/api/artists/'),
-        axios.get('/api/playlists/')
+        axios.get('/api/playlists/'),
+        axios.get('/api/songs/')
       ])
       .then(res => res.map(r => r.data))
       .then(data => this.onLoad(...data));
@@ -44,11 +46,12 @@ export default class AppContainer extends Component {
       this.setProgress(AUDIO.currentTime / AUDIO.duration));
   }
 
-  onLoad (albums, artists, playlists) {
+  onLoad (albums, artists, playlists, songs) {
     this.setState({
       albums: convertAlbums(albums),
       artists: artists,
-      playlists: playlists
+      playlists: playlists,
+      songs: songs
     });
   }
 
@@ -129,7 +132,6 @@ export default class AppContainer extends Component {
   }
 
   updatePlaylists (playlist) {
-    console.log(playlist);
     this.setState({
       playlists: [...this.state.playlists, playlist]
     })
@@ -147,6 +149,15 @@ export default class AppContainer extends Component {
     .catch(console.error);
   }
 
+  updateSelectedPlaylistSongs (song) {
+      let playlist = this.state.selectedPlaylist;
+      playlist.songs.concat([song]);
+      console.log(playlist);
+      this.setState({
+        selectedPlaylist: playlist
+      })
+  }
+
   render () {
 
     const props = Object.assign({}, this.state, {
@@ -155,7 +166,8 @@ export default class AppContainer extends Component {
       selectAlbum: this.selectAlbum,
       selectArtist: this.selectArtist,
       updatePlaylists: this.updatePlaylists,
-      selectPlaylist: this.selectPlaylist
+      selectPlaylist: this.selectPlaylist,
+      updateSelectedPlaylistSongs: this.updateSelectedPlaylistSongs
     });
 
     return (
