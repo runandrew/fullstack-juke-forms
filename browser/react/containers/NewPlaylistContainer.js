@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import NewPlaylistForm from '../components/NewPlaylistForm';
 import axios from 'axios';
+import { hashHistory } from 'react-router';
 
 export default class NewPlaylistContainer extends Component {
 
@@ -39,28 +40,26 @@ export default class NewPlaylistContainer extends Component {
 
     onSubmit(event) {
         event.preventDefault();
-        console.log(this.state.playlistInput);
         axios.post('/api/playlists', {
             name: this.state.playlistInput
         })
         .then((res) => res.data)
         .then((result) => {
-            console.log(result);
+            this.props.updatePlaylists(result);
             this.setState({
                 playlistInput: '',
                 message: `${this.state.playlistInput} was successfully added.`
             });
 
             setTimeout(() => {
-                this.setState({
-                    message: ''
-                });
-            }, 5000);
+                console.log(hashHistory);
+                const path = `/playlists/${result.id}`;
+                hashHistory.push(path);
+            }, 2000);
         })
         .catch(console.error);
 
     }
-
 
     render() {
 

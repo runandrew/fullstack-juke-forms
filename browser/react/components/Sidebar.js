@@ -16,10 +16,20 @@ const Sidebar = (props) => {
           <Link to='/artists'>ARTISTS</Link>
         </h4>
       </section>
+      <hr />
       <section>
         <h4 className="text-muted">PLAYLISTS</h4>
+        <div>    
+          <ul className="list-unstyled">
+            {props.playlists.map(playlist => (
+                <li key={playlist.id} className="playlist-item menu-item">
+                  <Link to={`/playlists/${playlist.id}`}>{playlist.name}</Link>
+                </li>
+              ))}
+          </ul>
+        </div>
         <h4>
-        <Link className="btn btn-primary btn-block" to="#">
+        <Link className="btn btn-primary btn-block" to="/newPlaylist">
           <span className="glyphicon glyphicon-plus"></span> PLAYLIST
         </Link>
         </h4>
