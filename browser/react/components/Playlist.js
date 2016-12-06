@@ -14,7 +14,9 @@ const Playlist = (props) => {
           songs={playlist.songs} 
           currentSong={props.currentSong} 
           isPlaying = {props.isPlaying} 
-          toggle = {props.toggleOne} />
+          toggleOne = {props.toggleOne}
+          fromPlaylist = {true}
+          removeSong = {props.removeSong} />
         { playlist.songs && !playlist.songs.length && <small>No songs.</small> }
         <hr />
       </div>

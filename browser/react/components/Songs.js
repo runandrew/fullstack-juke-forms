@@ -6,6 +6,8 @@ const Songs = (props) => {
   const currentSong = props.currentSong;
   const isPlaying = props.isPlaying;
   const toggle = props.toggleOne;
+  const fromPlaylist = props.fromPlaylist || false;
+  const removeSong = props.removeSong;
 
   return (
     <table className='table'>
@@ -31,6 +33,14 @@ const Songs = (props) => {
                 <span>{ song.artists ? song.artists.map(artist => artist.name).join(', ') : null }</span>
               </td>
               <td>{ song.genre }</td>
+              <td>
+                { 
+                  fromPlaylist ? (
+                    <button className="btn btn-default btn-xs" onClick={() => removeSong(song)}>
+                      <span className="glyphicon glyphicon-remove"></span>
+                    </button> ) : null
+                }
+              </td>
             </tr>
           ))
         }

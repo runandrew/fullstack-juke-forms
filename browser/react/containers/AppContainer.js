@@ -9,7 +9,7 @@ import Album from '../components/Album';
 import Sidebar from '../components/Sidebar';
 import Player from '../components/Player';
 
-import { convertAlbum, convertAlbums, convertSong, skip } from '../utils';
+import { convertAlbum, convertAlbums, convertSong, convertSongs, skip } from '../utils';
 
 export default class AppContainer extends Component {
 
@@ -25,7 +25,8 @@ export default class AppContainer extends Component {
     this.selectArtist = this.selectArtist.bind(this);
     this.updatePlaylists = this.updatePlaylists.bind(this);
     this.selectPlaylist = this.selectPlaylist.bind(this);
-    this.updateSelectedPlaylistSongs = this.updateSelectedPlaylistSongs.bind(this);
+    this.addSongToPlaylist = this.addSongToPlaylist.bind(this);
+    this.removeSongFromPlaylist = this.removeSongFromPlaylist.bind(this);
   }
 
   componentDidMount () {
@@ -51,7 +52,7 @@ export default class AppContainer extends Component {
       albums: convertAlbums(albums),
       artists: artists,
       playlists: playlists,
-      songs: songs
+      songs: convertSongs(songs)
     });
   }
 
@@ -142,15 +143,24 @@ export default class AppContainer extends Component {
     .then(res => res.data)
     .then(playlist => {
       this.setState({
-        selectedPlaylist: playlist
+        selectedPlaylist: playlist,
+        currentSongList: convertSongs(playlist.songs)
       })
     })
     .catch(console.error);
   }
 
-  updateSelectedPlaylistSongs (song) {
+  addSongToPlaylist (song) {
       let playlist = this.state.selectedPlaylist;
       playlist.songs = playlist.songs.concat([song]);
+      this.setState({
+        selectedPlaylist: playlist
+      })
+  }
+
+  removeSongFromPlaylist (removedSong) {
+      let playlist = this.state.selectedPlaylist;
+      playlist.songs = playlist.songs.filter(song => song.id !== removedSong.id);
       this.setState({
         selectedPlaylist: playlist
       })
@@ -165,7 +175,8 @@ export default class AppContainer extends Component {
       selectArtist: this.selectArtist,
       updatePlaylists: this.updatePlaylists,
       selectPlaylist: this.selectPlaylist,
-      updateSelectedPlaylistSongs: this.updateSelectedPlaylistSongs
+      addSongToPlaylist: this.addSongToPlaylist,
+      removeSongFromPlaylist: this.removeSongFromPlaylist
     });
 
     return (

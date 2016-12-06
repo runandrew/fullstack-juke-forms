@@ -26,7 +26,8 @@ class Album extends React.Component {
           songs={album.songs}
           currentSong={currentSong}
           isPlaying={isPlaying}
-          toggleOne={toggleOne} />
+          toggleOne={toggleOne}
+          fromPlaylist={false} />
       </div>
     );
   }

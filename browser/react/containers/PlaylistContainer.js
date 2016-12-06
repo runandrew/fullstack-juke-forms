@@ -13,6 +13,7 @@ export default class PlaylistContainer extends React.Component {
     }
     this.addSelectedSong = this.addSelectedSong.bind(this);
     this.updateSelectedSong = this.updateSelectedSong.bind(this);
+    this.removeSong = this.removeSong.bind(this);
   }
 
   componentDidMount () {
@@ -29,13 +30,12 @@ export default class PlaylistContainer extends React.Component {
 
   addSelectedSong (event) {
     event.preventDefault();
-    console.log(this.state.selectedSongId);
     axios.post(`/api/playlists/${this.props.selectedPlaylist.id}/songs`, {
       id: this.state.selectedSongId
     })
     .then(res => res.data)
     .then(song => {
-      this.props.updateSelectedPlaylistSongs(song);
+      this.props.addSongToPlaylist(song);
     })
     .catch(err => {
       this.setWarning();
@@ -58,10 +58,22 @@ export default class PlaylistContainer extends React.Component {
     });
   }
 
+  removeSong (song) {
+    axios.delete(`/api/playlists/${this.props.selectedPlaylist.id}/songs/${song.id}`)
+    .then(res => {
+      this.props.removeSongFromPlaylist(song);
+    })
+    .catch(err => {
+      this.setWarning();
+      console.error(err);
+    });
+  }
+
   render () {
     const props = Object.assign({}, this.props, this.state, {
       addSelectedSong: this.addSelectedSong,
       updateSelectedSong: this.updateSelectedSong,
+      removeSong: this.removeSong
     });
     return (
         <Playlist {...props} />
