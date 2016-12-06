@@ -3,7 +3,7 @@ import NewPlaylistForm from '../components/NewPlaylistForm';
 import axios from 'axios';
 import { hashHistory } from 'react-router';
 
-export default class NewPlaylistContainer extends Component {
+export default class NewPlaylistFormContainer extends Component {
 
     constructor(props) {
         super(props);
@@ -52,7 +52,6 @@ export default class NewPlaylistContainer extends Component {
             });
 
             setTimeout(() => {
-                console.log(hashHistory);
                 const path = `/playlists/${result.id}`;
                 hashHistory.push(path);
             }, 2000);
@@ -62,12 +61,12 @@ export default class NewPlaylistContainer extends Component {
     }
 
     render() {
-
+        const props = Object.assign({}, this.props, this.state, {
+          updatePlaylistInput: this.updatePlaylistInput,
+          onSubmit: this.onSubmit,
+        });
         return (
-            <div>
-            <NewPlaylistForm updatePlaylistInput={this.updatePlaylistInput} onSubmit={this.onSubmit} playlistInput={this.state.playlistInput} isDisabled={this.state.isDisabled} warning={this.state.warning} message={this.state.message}/>
-            </div>
-
+            <NewPlaylistForm {...props} />
         );
     }
 }

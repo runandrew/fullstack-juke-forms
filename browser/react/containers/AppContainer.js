@@ -141,7 +141,6 @@ export default class AppContainer extends Component {
     axios.get(`/api/playlists/${playlistId}`)
     .then(res => res.data)
     .then(playlist => {
-      console.log(playlist);
       this.setState({
         selectedPlaylist: playlist
       })
@@ -151,8 +150,7 @@ export default class AppContainer extends Component {
 
   updateSelectedPlaylistSongs (song) {
       let playlist = this.state.selectedPlaylist;
-      playlist.songs.concat([song]);
-      console.log(playlist);
+      playlist.songs = playlist.songs.concat([song]);
       this.setState({
         selectedPlaylist: playlist
       })

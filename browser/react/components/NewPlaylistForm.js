@@ -1,13 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
+import Warning from './Warning';
 
 const NewPlaylistForm = (props) => {
-
-
     return (
         <div className="well">
           <form className="form-horizontal" onSubmit={(e) => {
               props.onSubmit(e);
-
           }}>
             <fieldset>
               <legend>New Playlist</legend>
@@ -26,7 +24,7 @@ const NewPlaylistForm = (props) => {
               </div>
               <div className="form-group">
                 <div className="col-xs-10 col-xs-offset-2">
-                  <div className="alert alert-warning" style={{ "display": props.isDisabled ? "block" : "none"}}>{props.warning}</div>
+                  <Warning {...props}/>
                   <button type="submit" className="btn btn-success" disabled={props.isDisabled}>Create Playlist</button>
                   <h4>{props.message}</h4>
                 </div>
